@@ -1,0 +1,44 @@
+name: taskist
+description: Task List App
+
+version: 1.0.0+6
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^0.12.1
+  firebase_analytics: ^2.0.3
+  firebase_core: ^0.3.4
+  firebase_auth: ^0.8.4+5
+  cloud_firestore: ^0.10.1
+  google_sign_in: ^4.1.1
+  font_awesome_flutter: ^8.0.1
+  rxdart: ^0.23.1
+  uni_links: ^0.2.0
+  flutter_colorpicker: ^0.2.2
+  flutter_slidable: ^0.4.9
+  flutter_hooks: ^0.11.0
+  hooks_riverpod: ^0.5.1
+  url_launcher: ^5.0.2
+  share: ^0.6.0+1
+  launch_review: ^2.0.0
+  uuid: ^2.2.0
+
+  modal_progress_hud: ^0.1.3
+
+  connectivity: ^0.4.2
+  cupertino_icons: ^0.1.2
+  provider: 2.0.0+1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+
+flutter:
+
+  uses-material-design: true
+
