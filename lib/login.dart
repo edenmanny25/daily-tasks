@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'auth.dart';
+import 'domain/auth.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -9,6 +9,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
+    print('LoginPage 😆');
+
     return Container(
       color: Colors.white,
       child: Center(

@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:taskist/model/element.dart';
-import 'package:taskist/model/db.dart';
+import 'package:taskist/domain/db.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -18,6 +18,7 @@ class TaskPage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('TaskPage 6');
     var user = Provider.of<FirebaseUser>(context);
     DataProvider _data = Provider.of<DataProvider>(context);
 
@@ -32,8 +33,6 @@ class TaskPage extends HookWidget {
   }
 }
 
-// list
-
 class Tilelist extends StatelessWidget {
   final db = DBService();
   final DataProvider data;
@@ -42,6 +41,8 @@ class Tilelist extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('Tilelist  7️');
+
     var user = Provider.of<FirebaseUser>(context);
 
     var tasks = Provider.of<List<Task>>(context);
@@ -56,7 +57,8 @@ class Tilelist extends StatelessWidget {
           child: ListTile(
             leading: Checkbox(
                 value: task.completed,
-                onChanged: (value) => db.update(user, value, task.id)),
+                onChanged: (value) => db.update(
+                    user: user, check: value, id: task.id, listId: data.list)),
             title: Text(task.name),
           ));
     }).toList());

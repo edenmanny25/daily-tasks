@@ -4,10 +4,10 @@ import 'package:taskist/ui/page_done.dart';
 import 'package:taskist/ui/page_settings.dart';
 import 'package:taskist/ui/page_task.dart';
 import 'package:taskist/ui/testpage.dart';
-import 'package:taskist/model/db.dart';
+import 'package:taskist/domain/db.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:taskist/model/element.dart';
 
 final addTodoKey = UniqueKey();
 
@@ -23,6 +23,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 1;
   final db = DBService();
+  DataProvider data;
 
   final List<Widget> _children = [
     DonePage(),
@@ -33,6 +34,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    print('home page' + "😁😁");
     var user = Provider.of<FirebaseUser>(context);
     DataProvider _data = Provider.of<DataProvider>(context);
     final newTodoController = TextEditingController();
@@ -58,7 +60,7 @@ class _HomePageState extends State<HomePage> {
                           context: context,
                           builder: (BuildContext context) {
                             /// fix is routing page not im modoal
-                            return DonePage();
+                            return Lists();
                           },
                         );
                       },
@@ -84,6 +86,7 @@ class _HomePageState extends State<HomePage> {
                             data: {"name": value, "completed": false},
                             listId: _data.list);
                         newTodoController.clear();
+                        Navigator.pop(context);
                       },
                     ),
                   ));
@@ -92,10 +95,10 @@ class _HomePageState extends State<HomePage> {
             }),
             IconButton(
               icon: Icon(Icons.settings),
-              onPressed: () => onTabTapped(0),
+              onPressed: () => onTabTapped(2),
             ),
             IconButton(
-              icon: Icon(Icons.sync),
+              icon: Icon(Icons.bar_chart_rounded),
               onPressed: () => onTabTapped(3),
             ),
           ],
@@ -124,5 +127,61 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _currentIndex = index;
     });
+  }
+}
+
+class Lists extends StatelessWidget {
+  // returns a list of tasklists 😏
+  final db = DBService();
+
+  @override
+  Widget build(BuildContext context) {
+    print('Lists 😆😍🤑');
+
+    var user = Provider.of<FirebaseUser>(context);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        StreamProvider<List<Task>>.value(
+            stream: db.streamList(user), initialData: [], child: ListsHelper())
+      ],
+    );
+  }
+}
+
+class ListsHelper extends StatelessWidget {
+  final db = DBService();
+
+  @override
+  Widget build(BuildContext context) {
+    print('ListsHelper 😆😍🤑😋');
+    DataProvider _data = Provider.of<DataProvider>(context);
+
+    var tasks = Provider.of<List<Task>>(context);
+    var user = Provider.of<FirebaseUser>(context);
+
+    return Container(
+      height: 300,
+      child: ListView(
+          children: tasks.map((task) {
+        return Dismissible(
+            key: ValueKey(task.id),
+            onDismissed: (_) {
+              db.removeSub(
+                user: user,
+                id: task.id,
+              );
+            },
+            child: ListTile(
+              onTap: () {
+                _data.setlist(task.id);
+                Navigator.pop(context);
+              },
+              title: Text(task.name),
+            ));
+      }).toList()),
+    );
   }
 }

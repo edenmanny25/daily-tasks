@@ -3,7 +3,7 @@ import 'package:taskist/home.dart';
 import 'login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
-import 'package:taskist/model/db.dart';
+import 'package:taskist/domain/db.dart';
 
 void main() => runApp(MyApp());
 
@@ -32,10 +32,12 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
+//
 
 class LandingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print("LandingPage");
     var user = Provider.of<FirebaseUser>(context);
     bool loggedIn = user != null;
 

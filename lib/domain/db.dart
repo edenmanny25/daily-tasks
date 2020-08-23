@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
-import 'element.dart';
+import '../model/element.dart';
 import 'package:flutter/material.dart';
 
 class DBService {
@@ -67,16 +67,15 @@ class DBService {
         .delete();
   }
 
-  Future<void> changeListState(String id) {}
-
-  Stream<String> listStateStream(String id) {}
-
   // task functions
-  Future<void> update(FirebaseUser user, bool check, String id) {
+  Future<void> update(
+      {FirebaseUser user, bool check, String id, String listId}) {
     return _db
         .collection('data')
         .document(user.uid)
         .collection('tasks')
+        .document(listId)
+        .collection('subtask')
         .document(id)
         .updateData({'completed': check});
   }
@@ -86,7 +85,7 @@ class DataProvider extends ChangeNotifier {
   String _list = "-MDqWnGvhaT47yVHb2JB";
   String get list => _list;
 
-  DataProvider() {}
+  DataProvider();
 
   setlist(String newlist) {
     _list = newlist;
