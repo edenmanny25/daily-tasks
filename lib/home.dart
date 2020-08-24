@@ -43,67 +43,81 @@ class _HomePageState extends State<HomePage> {
       onWillPop: () async => false,
       child: Scaffold(
         bottomNavigationBar: BottomAppBar(
+            notchMargin: 5,
+            elevation: 5.0,
+            shape: AutomaticNotchedShape(
+                RoundedRectangleBorder(), StadiumBorder(side: BorderSide())),
             child: Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            IconButton(
-              icon: Icon(Icons.menu),
-              onPressed: () => onTabTapped(1),
-            ),
-            Builder(
-                builder: (context) => IconButton(
-                      icon: Icon(Icons.title),
-                      onPressed: () {
-                        showModalBottomSheet<void>(
-                          isScrollControlled: true,
-                          context: context,
-                          builder: (BuildContext context) {
-                            /// fix is routing page not im modoal
-                            return Lists();
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.list_alt),
+                  color: _currentIndex == 1 ? Colors.blue : Colors.black,
+                  onPressed: () => onTabTapped(1),
+                ),
+                Builder(
+                    builder: (context) => IconButton(
+                          icon: Icon(Icons.note_add),
+                          onPressed: () {
+                            showModalBottomSheet<void>(
+                              isScrollControlled: true,
+                              context: context,
+                              builder: (BuildContext context) {
+                                /// fix is routing page not im modoal
+                                return Lists();
+                              },
+                            );
                           },
-                        );
-                      },
-                    )),
-            FloatingActionButton(onPressed: () {
-              showModalBottomSheet<void>(
-                isScrollControlled: true,
-                context: context,
-                builder: (BuildContext context) {
-                  return SingleChildScrollView(
-                      child: Container(
-                    padding: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).viewInsets.bottom),
-                    child: TextField(
-                      key: addTodoKey,
-                      controller: newTodoController,
-                      decoration: const InputDecoration(
-                        labelText: 'What needs to be done?',
-                      ),
-                      onSubmitted: (value) {
-                        db.addTasks(
-                            user: user,
-                            data: {"name": value, "completed": false},
-                            listId: _data.list);
-                        newTodoController.clear();
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ));
-                },
-              );
-            }),
-            IconButton(
-              icon: Icon(Icons.settings),
-              onPressed: () => onTabTapped(2),
-            ),
-            IconButton(
-              icon: Icon(Icons.bar_chart_rounded),
-              onPressed: () => onTabTapped(3),
-            ),
-          ],
-        )),
+                        )),
+                Padding(
+                  padding: const EdgeInsets.only(left: 80.0),
+                  child: IconButton(
+                    icon: Icon(Icons.settings),
+                    color: _currentIndex == 2 ? Colors.blue : Colors.black,
+                    onPressed: () => onTabTapped(2),
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.bar_chart_rounded),
+                  color: _currentIndex == 3 ? Colors.blue : Colors.black,
+                  onPressed: () => onTabTapped(3),
+                ),
+              ],
+            )),
         body: _children[_currentIndex],
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            showModalBottomSheet<void>(
+              isScrollControlled: true,
+              context: context,
+              builder: (BuildContext context) {
+                return SingleChildScrollView(
+                    child: Container(
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
+                  child: TextField(
+                    key: addTodoKey,
+                    controller: newTodoController,
+                    decoration: const InputDecoration(
+                      labelText: 'What needs to be done?',
+                    ),
+                    onSubmitted: (value) {
+                      db.addTasks(
+                          user: user,
+                          data: {"name": value, "completed": false},
+                          listId: _data.list);
+                      newTodoController.clear();
+                      Navigator.pop(context);
+                    },
+                  ),
+                ));
+              },
+            );
+          },
+          child: new Icon(Icons.add),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
     );
   }

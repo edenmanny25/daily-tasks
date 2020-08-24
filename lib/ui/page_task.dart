@@ -26,25 +26,69 @@ class TaskPage extends HookWidget {
         body: StreamProvider<List<Task>>.value(
       stream: db.tasks(user, _data.list),
       initialData: [],
-      child: Tilelist(
-        data: _data,
-      ),
+      child: Tilelist(),
     ));
   }
 }
 
 class Tilelist extends StatelessWidget {
   final db = DBService();
-  final DataProvider data;
 
-  Tilelist({Key key, this.data}) : super(key: key);
+  Tilelist({
+    Key key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     print('Tilelist  7️');
 
-    var user = Provider.of<FirebaseUser>(context);
+    return DefaultTabController(
+      initialIndex: 0,
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          toolbarHeight: 50,
+          bottom: TabBar(
+            tabs: [
+              Tab(
+                text: "Tab 1",
+              ),
+              Tab(text: "Tab 2"),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: [AllTask(), CompletedTask()],
+        ),
+      ),
+    );
+  }
+}
 
+class CompletedTask extends StatelessWidget {
+  CompletedTask({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text("hi"),
+    );
+  }
+}
+
+class AllTask extends StatelessWidget {
+  final db = DBService();
+
+  AllTask({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    DataProvider data = Provider.of<DataProvider>(context);
+    var user = Provider.of<FirebaseUser>(context);
     var tasks = Provider.of<List<Task>>(context);
 
     return ListView(
