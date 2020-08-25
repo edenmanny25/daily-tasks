@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
 import '../model/element.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:intl/intl.dart';
 
 class DBService {
   final Firestore _db = Firestore.instance;
@@ -27,7 +29,19 @@ class DBService {
         list.documents.map((doc) => Task.fromFirestore(doc)).toList());
   }
 
-  Future<void> addTasks({FirebaseUser user, dynamic data, String listId}) {
+  Future<void> addTasks({FirebaseUser user, String data, String listId}) {
+    var now = new DateFormat('yyyy-MM-dd')
+        .format(new DateTime.now().add(Duration(days: 1)));
+
+    print(new DateFormat('yyyy-MM-dd').format(new DateTime.now()));
+
+    var time = DateTime.parse(now);
+
+    print(time.toString() + "⏲");
+    var name = {"name": data, "completed": false, "date": now};
+
+    print(name);
+
     return _db
         .collection('data')
         .document(user.uid)
@@ -35,7 +49,7 @@ class DBService {
         .document(listId)
         .collection('subtask')
         .document()
-        .setData(data);
+        .setData(name);
   }
 
   Future<void> addList(FirebaseUser user, dynamic data) {

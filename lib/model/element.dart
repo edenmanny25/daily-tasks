@@ -7,18 +7,28 @@ class Task {
   final String id;
   final String name;
   final bool completed;
+  final String date;
 
   Task({
     this.id,
     this.name,
     this.completed,
+    this.date,
   });
+
+  Map toJson() => {
+        'name': name,
+        'completed': completed,
+      };
 
   factory Task.fromFirestore(DocumentSnapshot doc) {
     Map data = doc.data;
-
     return Task(
-        id: doc.documentID, name: data['name'], completed: data['completed']);
+      id: doc.documentID,
+      name: data['name'],
+      completed: data['completed'],
+      date: data['date'],
+    );
   }
 }
 

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:taskist/ui/page_done.dart';
@@ -38,7 +40,6 @@ class _HomePageState extends State<HomePage> {
     var user = Provider.of<FirebaseUser>(context);
     DataProvider _data = Provider.of<DataProvider>(context);
     final newTodoController = TextEditingController();
-
     return new WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
@@ -103,10 +104,9 @@ class _HomePageState extends State<HomePage> {
                       labelText: 'What needs to be done?',
                     ),
                     onSubmitted: (value) {
-                      db.addTasks(
-                          user: user,
-                          data: {"name": value, "completed": false},
-                          listId: _data.list);
+                      print(data.toString() + 'hey');
+
+                      db.addTasks(user: user, data: value, listId: _data.list);
                       newTodoController.clear();
                       Navigator.pop(context);
                     },
@@ -114,6 +114,8 @@ class _HomePageState extends State<HomePage> {
                 ));
               },
             );
+
+            onTabTapped(1);
           },
           child: new Icon(Icons.add),
         ),
