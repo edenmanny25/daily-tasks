@@ -29,15 +29,14 @@ class DBService {
         list.documents.map((doc) => Task.fromFirestore(doc)).toList());
   }
 
-  Future<void> addTasks({FirebaseUser user, String data, String listId}) {
-    var now = new DateFormat('yyyy-MM-dd')
-        .format(new DateTime.now().add(Duration(days: 1)));
+  Future<void> addTasks(
+      {FirebaseUser user, String data, String listId, DateTime date}) {
+    var now = new DateFormat('yyyy-MM-dd').format(date);
 
-    print(new DateFormat('yyyy-MM-dd').format(new DateTime.now()));
+    print(now + "  add method");
 
-    var time = DateTime.parse(now);
+    /// var time = DateTime.parse(now);
 
-    print(time.toString() + "⏲");
     var name = {"name": data, "completed": false, "date": now};
 
     print(name);
@@ -103,6 +102,16 @@ class DataProvider extends ChangeNotifier {
 
   setlist(String newlist) {
     _list = newlist;
+    notifyListeners();
+  }
+}
+
+class Indexc extends ChangeNotifier {
+  int _index = 1;
+  get index => _index;
+
+  set index(int index) {
+    _index = index;
     notifyListeners();
   }
 }

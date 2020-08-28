@@ -39,27 +39,11 @@ class Tilelist extends HookWidget {
 
     var tasks = Provider.of<List<Task>>(context);
     DataProvider _states = Provider.of<DataProvider>(context);
-    final newTodoController = useTextEditingController();
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
-        TextField(
-          key: addTodoKey,
-          controller: newTodoController,
-          decoration: const InputDecoration(
-            labelText: 'What needs to be done?',
-          ),
-          onSubmitted: (value) {
-            db.addList(
-              user,
-              {"name": value, "completed": false},
-            );
-            newTodoController.clear();
-          },
-        ),
         Container(
-          height: 300,
           child: ListView(
               children: tasks.map((task) {
             return Dismissible(
@@ -69,7 +53,7 @@ class Tilelist extends HookWidget {
                 },
                 child: ListTile(
                   leading: Icon(Icons.favorite),
-                  title: Text(task.name),
+                  title: Text("cost"),
                   onTap: () => _states.setlist(task.id),
                 ));
           }).toList()),

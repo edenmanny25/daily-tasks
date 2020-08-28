@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:intl/intl.dart';
 
-///list tasks
+/// list tasks
 
 final addTodoKey = UniqueKey();
 
@@ -45,21 +45,25 @@ class Tilelist extends StatelessWidget {
 
     return DefaultTabController(
       initialIndex: 0,
-      length: 2,
+      length: 4,
       child: Scaffold(
         appBar: AppBar(
           toolbarHeight: 50,
           bottom: TabBar(
             tabs: [
               Tab(
-                text: "Active",
+                text: "Today",
+              ),
+              Tab(text: "Tomorrow"),
+              Tab(
+                text: "All",
               ),
               Tab(text: "Completed"),
             ],
           ),
         ),
         body: TabBarView(
-          children: [AllTask(), CompletedTask()],
+          children: [Todays(), Tomorrow(), AllTask(), CompletedTask()],
         ),
       ),
     );
@@ -98,6 +102,78 @@ class CompletedTask extends StatelessWidget {
   }
 }
 
+class Todays extends StatelessWidget {
+  final db = DBService();
+
+  Todays({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    DataProvider data = Provider.of<DataProvider>(context);
+    var user = Provider.of<FirebaseUser>(context);
+    var tasks = Provider.of<List<Task>>(context);
+    int completed = tasks.where((task) => task.completed).length;
+    print("completed" + " 😆" + completed.toString());
+    return ListView(
+        children: tasks.where((task) => task.completed).map((task) {
+      return Dismissible(
+          key: ValueKey(task.id),
+          onDismissed: (_) {
+            db.removeSub(user: user, id: task.id, listId: data.list);
+          },
+          child: ListTile(
+            leading: Checkbox(
+                value: task.completed,
+                onChanged: (value) => db.update(
+                    user: user, check: value, id: task.id, listId: data.list)),
+            title: Text(task.name),
+          ));
+    }).toList());
+  }
+}
+
+class Tomorrow extends StatelessWidget {
+  final db = DBService();
+
+  Tomorrow({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    DataProvider data = Provider.of<DataProvider>(context);
+    var user = Provider.of<FirebaseUser>(context);
+    var tasks = Provider.of<List<Task>>(context);
+    int completed = tasks.where((task) => task.completed).length;
+    print("completed" + " 😆" + completed.toString());
+
+    var dt = new DateTime.now();
+
+    var now = new DateFormat("yyyy-MM-dd").format(dt);
+    var time = DateTime.parse(now);
+
+    return ListView(
+        children: tasks
+            .where((task) => time.isAtSameMomentAs(DateTime.parse(task.date)))
+            .map((task) {
+      return Dismissible(
+          key: ValueKey(task.id),
+          onDismissed: (_) {
+            db.removeSub(user: user, id: task.id, listId: data.list);
+          },
+          child: ListTile(
+            leading: Checkbox(
+                value: task.completed,
+                onChanged: (value) => db.update(
+                    user: user, check: value, id: task.id, listId: data.list)),
+            title: Text(task.name),
+          ));
+    }).toList());
+  }
+}
+
 class AllTask extends StatelessWidget {
   final db = DBService();
 
@@ -116,14 +192,11 @@ class AllTask extends StatelessWidget {
     var dt = new DateTime.now();
 
     var now = new DateFormat("yyyy-MM-dd").format(dt);
-    var time = DateTime.parse(now);
 
     ///            .where((task) => time.isAtSameMomentAs(DateTime.parse(task.date)))
 
     return ListView(
-        children: tasks
-            .where((task) => time.isAtSameMomentAs(DateTime.parse(task.date)))
-            .map((task) {
+        children: tasks.where((task) => !task.completed).map((task) {
       return Dismissible(
           key: ValueKey(task.id),
           onDismissed: (_) {

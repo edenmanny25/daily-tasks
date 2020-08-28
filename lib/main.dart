@@ -7,32 +7,20 @@ import 'package:taskist/domain/db.dart';
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(builder: (_) => DataProvider()),
         StreamProvider<FirebaseUser>.value(
-            stream: FirebaseAuth.instance.onAuthStateChanged)
+            stream: FirebaseAuth.instance.onAuthStateChanged),
+        ChangeNotifierProvider(builder: (_) => DataProvider()),
+        ChangeNotifierProvider<Indexc>(builder: (__) => Indexc()),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Login',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: LandingPage(),
-      ),
+      child: LandingPage(),
     );
   }
 }
-//
 
 class LandingPage extends StatelessWidget {
   @override
