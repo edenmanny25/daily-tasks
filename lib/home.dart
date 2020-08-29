@@ -132,7 +132,12 @@ class Lists extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         StreamProvider<List<Task>>.value(
-            stream: db.streamList(user), initialData: [], child: ListsHelper())
+            stream: db.streamList(user), initialData: [], child: ListsHelper()),
+        FlatButton(
+            onPressed: () {
+              db.addList(user: user, data: {"name": "jelle3"});
+            },
+            child: Text("data"))
       ],
     );
   }
@@ -140,7 +145,6 @@ class Lists extends StatelessWidget {
 
 class ListsHelper extends StatelessWidget {
   final db = DBService();
-
   @override
   Widget build(BuildContext context) {
     print('ListsHelper 😆😍🤑😋');
@@ -150,25 +154,27 @@ class ListsHelper extends StatelessWidget {
     var user = Provider.of<FirebaseUser>(context);
 
     return Container(
-      height: 300,
+      height: tasks.length.toDouble() * 50,
       child: ListView(
+          scrollDirection: Axis.vertical,
           children: tasks.map((task) {
-        return Dismissible(
-            key: ValueKey(task.id),
-            onDismissed: (_) {
-              db.removeSub(
-                user: user,
-                id: task.id,
-              );
-            },
-            child: ListTile(
-              onTap: () {
-                _data.setlist(task.id);
-                Navigator.pop(context);
-              },
-              title: Text(task.name),
-            ));
-      }).toList()),
+            return Dismissible(
+                key: ValueKey(task.id),
+                onDismissed: (_) {
+                  db.removeSub(
+                    user: user,
+                    id: task.id,
+                  );
+                },
+                child: ListTile(
+                  tileColor: _data.list == task.id ? Colors.blue : Colors.white,
+                  onTap: () {
+                    _data.setlist(task.id);
+                    Navigator.pop(context);
+                  },
+                  title: Text(task.name),
+                ));
+          }).toList()),
     );
   }
 }

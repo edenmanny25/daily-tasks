@@ -53,7 +53,7 @@ class Tilelist extends HookWidget {
                 },
                 child: ListTile(
                   leading: Icon(Icons.favorite),
-                  title: Text("cost"),
+                  title: Text(task.name),
                   onTap: () => _states.setlist(task.id),
                 ));
           }).toList()),

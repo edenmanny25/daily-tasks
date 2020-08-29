@@ -51,7 +51,7 @@ class DBService {
         .setData(name);
   }
 
-  Future<void> addList(FirebaseUser user, dynamic data) {
+  Future<void> addList({FirebaseUser user, dynamic data}) {
     return _db
         .collection('data')
         .document(user.uid)
