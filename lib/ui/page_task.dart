@@ -115,9 +115,14 @@ class Todays extends StatelessWidget {
     var user = Provider.of<FirebaseUser>(context);
     var tasks = Provider.of<List<Task>>(context);
     int completed = tasks.where((task) => task.completed).length;
+
     print("completed" + " 😆" + completed.toString());
+    var time = DateTime.parse(DateFormat("yyyy-MM-dd").format(DateTime.now()));
+
     return ListView(
-        children: tasks.where((task) => task.completed).map((task) {
+        children: tasks
+            .where((task) => time.isAtSameMomentAs(DateTime.parse(task.date)))
+            .map((task) {
       return Dismissible(
           key: ValueKey(task.id),
           onDismissed: (_) {
@@ -147,12 +152,13 @@ class Tomorrow extends StatelessWidget {
     var user = Provider.of<FirebaseUser>(context);
     var tasks = Provider.of<List<Task>>(context);
     int completed = tasks.where((task) => task.completed).length;
-    print("completed" + " 😆" + completed.toString());
 
-    var dt = new DateTime.now();
+    var time = DateTime.parse(DateFormat("yyyy-MM-dd")
+        .format(DateTime.now().add(new Duration(days: 1))));
+    print("completed" + " 😆" + completed.toString() + time.toString());
 
-    var now = new DateFormat("yyyy-MM-dd").format(dt);
-    var time = DateTime.parse(now);
+    //var now = new DateFormat("yyyy-MM-dd").format(dt);
+    //var time = DateTime.parse(now);
 
     return ListView(
         children: tasks
