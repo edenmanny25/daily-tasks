@@ -22,9 +22,9 @@ class Task {
       };
 
   factory Task.fromFirestore(DocumentSnapshot doc) {
-    Map data = doc.data;
+    Map data = doc.data();
     return Task(
-      id: doc.documentID,
+      id: doc.id,
       name: data['name'],
       completed: data['completed'],
       date: data['date'],

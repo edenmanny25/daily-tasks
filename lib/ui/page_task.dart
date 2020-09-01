@@ -20,7 +20,7 @@ class TaskPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     print('TaskPage 6');
-    var user = Provider.of<FirebaseUser>(context);
+    var user = Provider.of<User>(context);
     DataProvider _data = Provider.of<DataProvider>(context);
 
     return Scaffold(
@@ -80,7 +80,7 @@ class CompletedTask extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DataProvider data = Provider.of<DataProvider>(context);
-    var user = Provider.of<FirebaseUser>(context);
+    var user = Provider.of<User>(context);
     var tasks = Provider.of<List<Task>>(context);
     int completed = tasks.where((task) => task.completed).length;
     print("completed" + " 😆" + completed.toString());
@@ -112,7 +112,7 @@ class Todays extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DataProvider data = Provider.of<DataProvider>(context);
-    var user = Provider.of<FirebaseUser>(context);
+    var user = Provider.of<User>(context);
     var tasks = Provider.of<List<Task>>(context);
     int completed = tasks.where((task) => task.completed).length;
 
@@ -149,7 +149,7 @@ class Tomorrow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DataProvider data = Provider.of<DataProvider>(context);
-    var user = Provider.of<FirebaseUser>(context);
+    var user = Provider.of<User>(context);
     var tasks = Provider.of<List<Task>>(context);
     int completed = tasks.where((task) => task.completed).length;
 
@@ -190,7 +190,7 @@ class AllTask extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DataProvider data = Provider.of<DataProvider>(context);
-    var user = Provider.of<FirebaseUser>(context);
+    var user = Provider.of<User>(context);
     var tasks = Provider.of<List<Task>>(context);
     int completed = tasks.where((task) => !task.completed).length;
     print("active" + " 😆" + completed.toString());

@@ -3,34 +3,33 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
 import '../model/element.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
 import 'package:intl/intl.dart';
 
 class DBService {
-  final Firestore _db = Firestore.instance;
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   /// Query a subcollection
-  Stream<List<Task>> streamList(FirebaseUser user) {
-    var ref = _db.collection('data').document(user.uid).collection('tasks');
+  Stream<List<Task>> streamList(User user) {
+    var ref = _db.collection('data').doc(user.uid).collection('tasks');
 
-    return ref.snapshots().map((list) =>
-        list.documents.map((doc) => Task.fromFirestore(doc)).toList());
+    return ref.snapshots().map(
+        (list) => list.docs.map((doc) => Task.fromFirestore(doc)).toList());
   }
 
-  Stream<List<Task>> tasks(FirebaseUser user, String listId) {
+  Stream<List<Task>> tasks(User user, String listId) {
     var ref = _db
         .collection('data')
-        .document(user.uid)
+        .doc(user.uid)
         .collection('tasks')
-        .document(listId)
+        .doc(listId)
         .collection('subtask');
 
-    return ref.snapshots().map((list) =>
-        list.documents.map((doc) => Task.fromFirestore(doc)).toList());
+    return ref.snapshots().map(
+        (list) => list.docs.map((doc) => Task.fromFirestore(doc)).toList());
   }
 
   Future<void> addTasks(
-      {FirebaseUser user, String data, String listId, DateTime date}) {
+      {User user, String data, String listId, DateTime date}) {
     var now = new DateFormat('yyyy-MM-dd').format(date);
 
     print(now + "  add method");
@@ -43,54 +42,53 @@ class DBService {
 
     return _db
         .collection('data')
-        .document(user.uid)
+        .doc(user.uid)
         .collection('tasks')
-        .document(listId)
+        .doc(listId)
         .collection('subtask')
-        .document()
-        .setData(name);
+        .doc()
+        .set(name);
   }
 
-  Future<void> addList({FirebaseUser user, dynamic data}) {
+  Future<void> addList({User user, dynamic data}) {
     return _db
         .collection('data')
-        .document(user.uid)
+        .doc(user.uid)
         .collection('tasks')
-        .document()
-        .setData(data);
+        .doc()
+        .set(data);
   }
 
-  Future<void> removeSub({FirebaseUser user, String id, String listId}) {
+  Future<void> removeSub({User user, String id, String listId}) {
     return _db
         .collection('data')
-        .document(user.uid)
+        .doc(user.uid)
         .collection('tasks')
-        .document(listId)
+        .doc(listId)
         .collection('subtask')
-        .document(id)
+        .doc(id)
         .delete();
   }
 
-  Future<void> removeList({FirebaseUser user, String listId}) {
+  Future<void> removeList({User user, String listId}) {
     return _db
         .collection('data')
-        .document(user.uid)
+        .doc(user.uid)
         .collection('tasks')
-        .document(listId)
+        .doc(listId)
         .delete();
   }
 
   // task functions
-  Future<void> update(
-      {FirebaseUser user, bool check, String id, String listId}) {
+  Future<void> update({User user, bool check, String id, String listId}) {
     return _db
         .collection('data')
-        .document(user.uid)
+        .doc(user.uid)
         .collection('tasks')
-        .document(listId)
+        .doc(listId)
         .collection('subtask')
-        .document(id)
-        .updateData({'completed': check});
+        .doc(id)
+        .update({'completed': check});
   }
 }
 

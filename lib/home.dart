@@ -120,7 +120,7 @@ class Lists extends StatelessWidget {
   Widget build(BuildContext context) {
     print('Lists 😆😍🤑');
 
-    var user = Provider.of<FirebaseUser>(context);
+    var user = Provider.of<User>(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -146,30 +146,26 @@ class ListsHelper extends StatelessWidget {
     DataProvider _data = Provider.of<DataProvider>(context);
 
     var tasks = Provider.of<List<Task>>(context);
-    var user = Provider.of<FirebaseUser>(context);
+    var user = Provider.of<User>(context);
 
     return Container(
-      height: tasks.length.toDouble() * 50,
-      child: ListView(
-          scrollDirection: Axis.vertical,
+      height: tasks.length.toDouble() * 60,
+      child: Column(
           children: tasks.map((task) {
-            return Dismissible(
-                key: ValueKey(task.id),
-                onDismissed: (_) {
-                  db.removeSub(
-                    user: user,
-                    id: task.id,
-                  );
-                },
-                child: ListTile(
-                  tileColor: _data.list == task.id ? Colors.blue : Colors.white,
-                  onTap: () {
-                    _data.setlist(task.id);
-                    Navigator.pop(context);
-                  },
-                  title: Text(task.name),
-                ));
-          }).toList()),
+        return Dismissible(
+            key: ValueKey(task.id),
+            onDismissed: (_) {
+              db.removeList(user: user, listId: task.id);
+            },
+            child: ListTile(
+              tileColor: _data.list == task.id ? Colors.blue : Colors.white,
+              onTap: () {
+                _data.setlist(task.id);
+                Navigator.pop(context);
+              },
+              title: Text(task.name),
+            ));
+      }).toList()),
     );
   }
 }
@@ -182,19 +178,34 @@ class Add extends StatefulWidget {
 }
 
 class _MyStatefulWidgetState extends State<Add> {
-  final newTodoController = TextEditingController();
+  var newTodoController = TextEditingController();
   final db = DBService();
   DateTime _dateTime;
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the
+    // widget tree.
+    newTodoController.dispose();
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     print("add rebuild");
-    var user = Provider.of<FirebaseUser>(context);
+    var user = Provider.of<User>(context);
     DataProvider _data = Provider.of<DataProvider>(context);
 
     return Column(
       children: <Widget>[
         TextField(
+          showCursor: false,
           autofocus: true,
           key: addTodoKey,
           controller: newTodoController,
@@ -207,6 +218,7 @@ class _MyStatefulWidgetState extends State<Add> {
             db.addTasks(
                 user: user, data: value, listId: _data.list, date: date);
             newTodoController.clear();
+
             Navigator.pop(context);
           },
         ),

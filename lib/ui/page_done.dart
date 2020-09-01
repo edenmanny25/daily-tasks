@@ -17,7 +17,7 @@ class DonePage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    var user = Provider.of<FirebaseUser>(context);
+    var user = Provider.of<User>(context);
 
     return Scaffold(
         body: StreamProvider<List<Task>>.value(
@@ -35,7 +35,7 @@ class Tilelist extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    var user = Provider.of<FirebaseUser>(context);
+    var user = Provider.of<User>(context);
 
     var tasks = Provider.of<List<Task>>(context);
     DataProvider _states = Provider.of<DataProvider>(context);

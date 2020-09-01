@@ -10,9 +10,7 @@ import 'package:taskist/domain/auth.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SettingsPage extends StatefulWidget {
-  final FirebaseUser user;
-
-  SettingsPage({Key key, this.user}) : super(key: key);
+  SettingsPage({Key key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _SettingsPageState();

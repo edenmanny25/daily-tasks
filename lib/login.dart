@@ -10,19 +10,21 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     print('LoginPage 😆');
-
-    return Container(
-      color: Colors.white,
-      child: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            FlutterLogo(size: 150),
-            SizedBox(height: 50),
-            _signInButton(),
-            SizedBox(height: 50),
-          ],
+    return MaterialApp(
+      home: Scaffold(
+        body: Container(
+          color: Colors.white,
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                FlutterLogo(size: 100),
+                SizedBox(height: 50),
+                _signInButton()
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -30,6 +32,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _signInButton() {
     return FlatButton(
+      color: Colors.lightBlue,
       splashColor: Colors.grey,
       onPressed: () {
         authService.signInWithGoogle();
@@ -47,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
                 'Sign in with google',
                 style: TextStyle(
                   fontSize: 20,
-                  color: Colors.grey,
+                  color: Colors.white,
                 ),
               ),
             )
