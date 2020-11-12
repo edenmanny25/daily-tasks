@@ -35,6 +35,7 @@ class Nav extends StatelessWidget {
   Widget build(BuildContext context) {
     print('nav page' + "😁😁");
     var index = Provider.of<Indexc>(context);
+    var user = Provider.of<User>(context);
 
     return new WillPopScope(
       onWillPop: () async => false,
@@ -81,7 +82,7 @@ class Nav extends StatelessWidget {
                   icon: Icon(Icons.bar_chart_rounded),
                   color: index.index == 3 ? Colors.blue : Colors.black,
                   onPressed: () {
-                    index.index = 3;
+                    DBService().docId(user: user);
                   }),
             ],
           ),
@@ -130,9 +131,9 @@ class Lists extends StatelessWidget {
             stream: db.streamList(user), initialData: [], child: ListsHelper()),
         FlatButton(
             onPressed: () {
-              db.addList(user: user, data: {"name": "jelle3"});
+              db.testing(user: user);
             },
-            child: Text("data"))
+            child: Text("data ?? "))
       ],
     );
   }
@@ -248,7 +249,8 @@ class _MyStatefulWidgetState extends State<Add> {
                 child: Text('finish'),
                 onPressed: () {
                   String value = newTodoController.text;
-                  final date = _dateTime;
+                  final date = _dateTime == null ? DateTime.now() : _dateTime;
+
                   print(date.toString() + " finish button");
                   db.addTasks(
                       user: user, data: value, listId: _data.list, date: date);

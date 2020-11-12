@@ -4,6 +4,7 @@ import 'dart:async';
 import '../model/element.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DBService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -50,6 +51,14 @@ class DBService {
         .set(name);
   }
 
+  Future<void> testing({User user}) {
+    final list = DataProvider();
+    list.setlist("newlist");
+    String d = list._list;
+    print(d);
+    return list.setlist("newlist");
+  }
+
   Future<void> addList({User user, dynamic data}) {
     return _db
         .collection('data')
@@ -68,6 +77,15 @@ class DBService {
         .collection('subtask')
         .doc(id)
         .delete();
+  }
+
+  Future<void> docId({User user}) {
+    return _db
+        .collection('data')
+        .doc(user.uid)
+        .collection('tasks')
+        .get()
+        .then((value) => print(value.docs[0].id));
   }
 
   Future<void> removeList({User user, String listId}) {
@@ -93,7 +111,9 @@ class DBService {
 }
 
 class DataProvider extends ChangeNotifier {
-  String _list = "-MDqWnGvhaT47yVHb2JB";
+// Try reading data from the counter key. If it doesn't exist, return 0.
+
+  String _list = "-eMY8WdfnOkb0Vd5hY0JS";
   String get list => _list;
 
   DataProvider();
