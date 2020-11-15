@@ -4,7 +4,6 @@ import 'dart:async';
 import '../model/element.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class DBService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -115,11 +114,15 @@ class DataProvider extends ChangeNotifier {
 
   String _list = "-eMY8WdfnOkb0Vd5hY0JS";
   String get list => _list;
-
+  
   DataProvider();
 
   setlist(String newlist) {
+
+    print('dataprovier listid' + _list);
+
     _list = newlist;
+    print('dataprovier listid' + _list);
     notifyListeners();
   }
 }

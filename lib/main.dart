@@ -5,9 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:taskist/domain/db.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:uuid/uuid.dart';
 
-var _uuid = Uuid();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

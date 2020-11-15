@@ -51,13 +51,9 @@ class Tilelist extends StatelessWidget {
           toolbarHeight: 50,
           bottom: TabBar(
             tabs: [
-              Tab(
-                text: "Today",
-              ),
+              Tab(text: "Today"),
               Tab(text: "Tomorrow"),
-              Tab(
-                text: "All",
-              ),
+              Tab(text: "All"),
               Tab(text: "Completed"),
             ],
           ),
@@ -195,9 +191,6 @@ class AllTask extends StatelessWidget {
     int completed = tasks.where((task) => !task.completed).length;
     print("active" + " 😆" + completed.toString());
 
-    var dt = new DateTime.now();
-
-    var now = new DateFormat("yyyy-MM-dd").format(dt);
 
     ///            .where((task) => time.isAtSameMomentAs(DateTime.parse(task.date)))
 

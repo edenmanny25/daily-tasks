@@ -3,10 +3,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 import '../domain/db.dart';
-import 'package:uuid/uuid.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-var _uuid = Uuid();
 
 class AuthService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
